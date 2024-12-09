@@ -16,11 +16,10 @@ public class CreateProdcutEndpoint : ICarterModule
             var createProductResponse = result.Adapt<CreateProductResponse>();
 
             return Results.Created($"getProduct/{result.Id}", createProductResponse);
-        })
-            .WithName("CreateProduct")
-            .Produces<CreateProductResponse>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status500InternalServerError)
-            .WithDescription("Create Product")
-            .WithSummary("Create Product");
+        }).WithName("CreateProduct")
+        .Produces<CreateProductResponse>(StatusCodes.Status201Created)
+        .ProducesProblem(StatusCodes.Status500InternalServerError)
+        .WithDescription("Create Product")
+        .WithSummary("Create Product");
     }
 }
