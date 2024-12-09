@@ -1,5 +1,4 @@
 using Catalog.API.Utils;
-using Marten;
 
 var builder = WebApplication.CreateBuilder(args);
 
