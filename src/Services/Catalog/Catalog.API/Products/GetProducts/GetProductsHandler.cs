@@ -1,6 +1,6 @@
 ﻿using Catalog.API.Models;
 
-namespace Catalog.API.Products;
+namespace Catalog.API.Products.GetProducts;
 
 public record GetProductsQuery() : IQuery<GetProductsQueryResponse>;
 
