@@ -1,6 +1,12 @@
 using Catalog.API.Utils;
+using Marten;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMarten(config =>
+{
+    config.Connection(builder.Configuration.GetConnectionString("Database")!);
+}).UseLightweightSessions();
 
 builder.Services.AddMediatR(config =>
 {

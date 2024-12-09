@@ -18,6 +18,9 @@ public class CreateProdcutEndpoint : ICarterModule
             return Results.Created($"getProduct/{result.Id}", createProductResponse);
         })
             .WithName("CreateProduct")
-            .Produces<CreateProductResponse>(StatusCodes.Status201Created);
+            .Produces<CreateProductResponse>(StatusCodes.Status201Created)
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithDescription("Create Product")
+            .WithSummary("Create Product");
     }
 }
