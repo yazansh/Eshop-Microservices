@@ -1,6 +1,6 @@
 ﻿namespace Catalog.API.Products.GetProductById;
 
-public record GetProductByIdResult(Product Product);
+public record GetProductByIdResponse(Product Product);
 
 public class GetProductByIdEndpoint : ICarterModule
 {
@@ -12,12 +12,12 @@ public class GetProductByIdEndpoint : ICarterModule
 
             var result = await sender.Send(query);
 
-            var product = result.Adapt<GetProductByIdResult>();
+            var productResponse = result.Adapt<GetProductByIdResponse>();
 
-            return Results.Ok(product);
+            return Results.Ok(productResponse);
 
         }).WithName("GetProductById")
-        .Produces<GetProductByIdResult>(StatusCodes.Status200OK)
+        .Produces<GetProductByIdResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status404NotFound)
         .ProducesProblem(StatusCodes.Status500InternalServerError)
         .WithDescription("Get Product By Id")

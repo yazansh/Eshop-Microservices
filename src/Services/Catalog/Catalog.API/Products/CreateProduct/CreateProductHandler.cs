@@ -1,16 +1,14 @@
-﻿using Catalog.API.Models;
+﻿namespace Catalog.API.Products.CreateProduct;
 
-namespace Catalog.API.Products.CreateProduct;
-
-public record CreateProductCommand(string Name, string Description, decimal Price,List<string> Categories, string ImagePath) : ICommand<CreateProductCommandResponse>;
-public record CreateProductCommandResponse(Guid Id);
+public record CreateProductCommand(string Name, string Description, decimal Price,List<string> Categories, string ImagePath) : ICommand<CreateProductCommandResult>;
+public record CreateProductCommandResult(Guid Id);
 
 internal class CreateProductCommandHandler(IDocumentSession session, ILogger<CreateProductCommandHandler> logger)
-    : ICommandHandler<CreateProductCommand, CreateProductCommandResponse>
+    : ICommandHandler<CreateProductCommand, CreateProductCommandResult>
 {
-    public async Task<CreateProductCommandResponse> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+    public async Task<CreateProductCommandResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        logger.LogInformation("CreateProductCommandHandler.Handle is executing with Command: {@Command}", command);
+        logger.LogInformation($"{nameof(CreateProductCommandHandler)}.Handle is executing with Command: {{@Command}}", command);
 
         var productEntity = new Product
         {
@@ -24,6 +22,6 @@ internal class CreateProductCommandHandler(IDocumentSession session, ILogger<Cre
         session.Store(productEntity);
         await session.SaveChangesAsync(cancellationToken);
 
-        return new CreateProductCommandResponse(productEntity.Id);
+        return new CreateProductCommandResult(productEntity.Id);
     }
 }

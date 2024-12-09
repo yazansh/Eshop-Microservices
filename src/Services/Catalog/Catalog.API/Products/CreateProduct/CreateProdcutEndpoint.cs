@@ -7,7 +7,7 @@ public class CreateProdcutEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/products", async (CreateProductRequest request, ISender sender) =>
+        app.MapPost("/products", async (CreateProductRequest request, ISender sender, HttpContext httpContext) =>
         {
             var createProductCommand = request.Adapt<CreateProductCommand>();
 
@@ -15,7 +15,7 @@ public class CreateProdcutEndpoint : ICarterModule
 
             var createProductResponse = result.Adapt<CreateProductResponse>();
 
-            return Results.Created($"getProduct/{result.Id}", createProductResponse);
+            return Results.Created($"{httpContext.Request.Scheme}://{httpContext.Request.Host}/products/{result.Id}", createProductResponse);
         }).WithName("CreateProduct")
         .Produces<CreateProductResponse>(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status500InternalServerError)
