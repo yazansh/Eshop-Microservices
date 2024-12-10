@@ -22,7 +22,7 @@ internal class DeleteProductCommandHandler
     {
         logger.LogInformation($"{nameof(DeleteProductCommandHandler)}.Handle is called with {{@Command}}", command);
 
-        var product = await session.LoadAsync<Product>(command.Id, cancellationToken) ?? throw new ProductNotFoundException();
+        var product = await session.LoadAsync<Product>(command.Id, cancellationToken) ?? throw new ProductNotFoundException(command.Id);
 
         session.Delete(product);
         await session.SaveChangesAsync(cancellationToken);

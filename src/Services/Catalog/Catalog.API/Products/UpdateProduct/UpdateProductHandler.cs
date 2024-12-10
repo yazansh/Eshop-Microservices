@@ -42,7 +42,7 @@ internal class UpdateProductCommandHandler
     {
         logger.LogInformation($"{nameof(UpdateProductCommandHandler)}.Handle is called with {{@Command}}", command);
 
-        var product = await session.LoadAsync<Product>(command.Id, cancellationToken) ?? throw new ProductNotFoundException();
+        var product = await session.LoadAsync<Product>(command.Id, cancellationToken) ?? throw new ProductNotFoundException(command.Id);
 
         product.Name = command.Name;
         product.Description = command.Description;

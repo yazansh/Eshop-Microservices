@@ -8,3 +8,5 @@ global using BuildingBlocks.Behaviors;
 global using Catalog.API.Exceptions;
 global using Catalog.API.Models;
 global using Catalog.API.Utils;
+global using BuildingBlocks.Exceptions;
+global using BuildingBlocks.Exceptions.Handlers;
