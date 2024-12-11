@@ -9,7 +9,6 @@ global using HealthChecks.UI.Client;
 global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 global using Catalog.API.Exceptions;
 global using Catalog.API.Models;
-global using Catalog.API.Utils;
 global using Catalog.API.Data;
 global using BuildingBlocks.CQRS;
 global using BuildingBlocks.Behaviors;
