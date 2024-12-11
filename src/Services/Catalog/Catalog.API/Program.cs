@@ -1,8 +1,8 @@
-using Catalog.API.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var assembly = typeof(Program).Assembly;
+var npgConnectionString = builder.Configuration.GetConnectionString("Database")!;
+
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
@@ -15,16 +15,24 @@ builder.Services.AddCarter(new CarterDependencyContextAssemblyCatalogCustom());
 
 builder.Services.AddMarten(options =>
 {
-    options.Connection(builder.Configuration.GetConnectionString("Database")!);
+    options.Connection(npgConnectionString);
 }).UseLightweightSessions()
 .InitializeWith<CatalogInitialData>();
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
+builder.Services.AddHealthChecks().AddNpgSql(npgConnectionString);
 
 var app = builder.Build();
 
 app.MapCarter();
 
 app.UseExceptionHandler(options => { });
+
+app.MapHealthChecks("/health",
+    new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 
 app.Run();
