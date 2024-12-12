@@ -18,6 +18,9 @@ builder.Services.AddMarten(opt =>
     opt.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
 
+// TODO: add global excpeiton handling
+// TODO: added health checks
+
 var app = builder.Build();
 
 app.MapCarter();
