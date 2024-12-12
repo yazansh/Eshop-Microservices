@@ -3,7 +3,14 @@
 public record DeleteBasketCommand(string Username) : ICommand<DeleteBasketCommandResult>;
 public record DeleteBasketCommandResult(bool IsSuccess);
 
-// TODO: add command validation 
+public class DeleteBasketCommandValidator : AbstractValidator<DeleteBasketCommand>
+{
+    public DeleteBasketCommandValidator()
+    {
+        RuleFor(c => c.Username).NotNull().NotEmpty()
+            .WithMessage("Username Must not be empty");
+    }
+}
 
 internal class DeleteBasketHandler 
     (IBasketRepository repository)
