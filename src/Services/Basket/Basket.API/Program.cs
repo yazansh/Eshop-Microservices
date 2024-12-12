@@ -1,3 +1,5 @@
+using BuildingBlocks.Exceptions.Handlers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var assembly = typeof(Program).Assembly;
@@ -16,14 +18,19 @@ builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddMarten(opt =>
 {
     opt.Connection(builder.Configuration.GetConnectionString("Database")!);
+    opt.Schema.For<ShoppingCart>().Identity(sc => sc.Username);
 }).UseLightweightSessions();
 
-// TODO: add global excpeiton handling
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 // TODO: added health checks
+
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 var app = builder.Build();
 
 app.MapCarter();
 
+app.UseExceptionHandler(options => { });
+// TODO: use health checks
 
 app.Run();

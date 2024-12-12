@@ -5,12 +5,14 @@ public record StoreBasketCommandResult(ShoppingCart Cart);
 
 // TODO: Add command validations
 
-internal class StoreBasketHandler : ICommandHandler<StoreBasketCommand, StoreBasketCommandResult>
+internal class StoreBasketHandler
+    (IBasketRepository repository)
+    : ICommandHandler<StoreBasketCommand, StoreBasketCommandResult>
 {
-    public Task<StoreBasketCommandResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
+    public async Task<StoreBasketCommandResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
     {
-        var cart = command.Cart;
-        // TODO: call the repository
-        return Task.FromResult(new StoreBasketCommandResult(cart));
+        var result = await repository.StoreBasketAsync(command.Cart, cancellationToken);
+
+        return new StoreBasketCommandResult(result);
     }
 }

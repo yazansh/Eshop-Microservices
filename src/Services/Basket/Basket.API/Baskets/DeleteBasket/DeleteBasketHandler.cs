@@ -5,12 +5,14 @@ public record DeleteBasketCommandResult(bool IsSuccess);
 
 // TODO: add command validation 
 
-internal class DeleteBasketHandler : ICommandHandler<DeleteBasketCommand, DeleteBasketCommandResult>
+internal class DeleteBasketHandler 
+    (IBasketRepository repository)
+    : ICommandHandler<DeleteBasketCommand, DeleteBasketCommandResult>
 {
-    public Task<DeleteBasketCommandResult> Handle(DeleteBasketCommand request, CancellationToken cancellationToken)
+    public async Task<DeleteBasketCommandResult> Handle(DeleteBasketCommand command, CancellationToken cancellationToken)
     {
-        // TODO: call the repository delete method
+        var result = await repository.DeleteBasketAsync(command.Username, cancellationToken);
 
-        return Task.FromResult(new DeleteBasketCommandResult(true));
+        return new DeleteBasketCommandResult(result);
     }
 }
