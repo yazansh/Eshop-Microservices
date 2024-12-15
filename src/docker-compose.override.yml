@@ -21,6 +21,11 @@ services:
       POSTGRES_DB: BasketDb
     volumes:
       - postgres_basket:/var/lib/postgresql/data/
+  distributedcache:
+    container_name: distributedcache
+    ports: 
+        - 6379:6379
+    restart: always
   catalog.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -32,6 +37,7 @@ services:
       - "6060:8081"
     depends_on:
       - catalogdb
+      - distributedcache 
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro

@@ -3,6 +3,8 @@ services:
     image: 'postgres:latest'
   basketdb:
     image: 'postgres:latest'
+  distributedcache:
+    image: redis
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
     build:
