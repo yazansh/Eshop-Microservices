@@ -24,7 +24,7 @@ services:
   distributedcache:
     container_name: distributedcache
     ports: 
-        - 6379:6379
+        - 6381:6379
     restart: always
   catalog.api:
     environment:
