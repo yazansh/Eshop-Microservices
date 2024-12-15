@@ -22,7 +22,13 @@ builder.Services.AddMarten(opt =>
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 // TODO: added health checks
 
+builder.Services.AddStackExchangeRedisCache((opt) =>
+{
+    opt.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
 
 var app = builder.Build();
 
