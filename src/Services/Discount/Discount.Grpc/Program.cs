@@ -17,4 +17,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.MapGrpcService<DiscountService>();
 
+app.UseMigration();
+
 app.Run();
