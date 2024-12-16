@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Discount.Grpc.Services;
 
 public class DiscountService
-    (DiscountDbContext dbContext)
+    (DiscountDbContext dbContext, ILogger<DiscountService> logger)
     : Discount.DiscountBase
 {
 
@@ -19,8 +19,16 @@ public class DiscountService
             Amount = request.Coupon.Amount,
         };
 
-        await dbContext.Coupons.AddAsync(coupon);
-        await dbContext.SaveChangesAsync();
+        try
+        {
+            await dbContext.Coupons.AddAsync(coupon);
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Exception: {{@Exception}}", ex);
+            throw;
+        }
 
         return new CouponModel
         {
@@ -33,10 +41,19 @@ public class DiscountService
 
     public override async Task<CouponModel> GetDiscount(GetDiscountRequest request, ServerCallContext context)
     {
-        var coupon = await dbContext.Coupons
-            .Where(c => c.ProductName.Equals(request.ProductName))
-            .FirstOrDefaultAsync() ?? throw new Exception($"Product name: {request.ProductName} was not found!");
+        Coupon coupon;
+        try
+        {
+            coupon = await dbContext.Coupons
+                .Where(c => c.ProductName.Equals(request.ProductName))
+                .FirstOrDefaultAsync() ?? throw new Exception($"Product name: {request.ProductName} was not found!");
 
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Exception: {{@Exception}}", ex);
+            throw;
+        }
         return new CouponModel
         {
             Id = coupon.Id,
@@ -48,12 +65,24 @@ public class DiscountService
 
     public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
     {
-        var coupon = await dbContext.Coupons
-            .Where(c => c.ProductName.Equals(request.Coupon.ProductName))
-            .FirstOrDefaultAsync() ?? throw new Exception($"Product name: {request.Coupon.ProductName} was not found!");
+        Coupon coupon;
+        try
+        {
+            coupon = await dbContext.Coupons
+                .Where(c => c.ProductName.Equals(request.Coupon.ProductName))
+                .FirstOrDefaultAsync() ?? throw new Exception($"Product name: {request.Coupon.ProductName} was not found!");
 
-        dbContext.Coupons.Update(coupon);
-        await dbContext.SaveChangesAsync();
+            coupon.Description = request.Coupon.Description;
+            coupon.Amount = request.Coupon.Amount;
+
+            dbContext.Coupons.Update(coupon);
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Exception: {{@Exception}}", ex);
+            throw;
+        }
 
         return new CouponModel
         {
@@ -66,12 +95,22 @@ public class DiscountService
 
     public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
     {
-        var coupon = await dbContext.Coupons
-            .Where(c => c.ProductName.Equals(request.ProductName))
-            .FirstOrDefaultAsync() ?? throw new Exception($"Product name: {request.ProductName} was not found!");
+        Coupon coupon;
 
-        dbContext.Coupons.Remove(coupon);
-        await dbContext.SaveChangesAsync();
+        try
+        {
+            coupon = await dbContext.Coupons
+                .Where(c => c.ProductName.Equals(request.ProductName))
+                .FirstOrDefaultAsync() ?? throw new Exception($"Product name: {request.ProductName} was not found!");
+
+            dbContext.Coupons.Remove(coupon);
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError($"Exception: {{@Exception}}", ex);
+            throw;
+        }
 
         return new DeleteDiscountResponse { Success = true };
     }
