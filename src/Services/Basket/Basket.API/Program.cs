@@ -29,6 +29,24 @@ builder.Services.AddStackExchangeRedisCache((opt) =>
     opt.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
+
+//Grpc Services
+builder.Services.AddGrpcClient<Discount.Grpc.Discount.DiscountClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+})
+.ConfigurePrimaryHttpMessageHandler(() =>
+{
+    var handler = new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback =
+        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    };
+
+    return handler;
+});
+
+
 //Cross-Cutting Services
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 builder.Services.AddHealthChecks()
