@@ -13,7 +13,7 @@ internal class GetBasketHandler
 
         foreach (var item in result.Items)
         {
-            var discount = await discountClient.GetDiscountAsync(new Discount.Grpc.GetDiscountRequest { ProductName = item.ProductName });
+            var discount = await discountClient.GetDiscountAsync(new Discount.Grpc.GetDiscountRequest { ProductName = item.ProductName }, cancellationToken: cancellationToken);
             item.Price -= discount.Amount;
         }
 
