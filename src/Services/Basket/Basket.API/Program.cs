@@ -3,37 +3,37 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Application Services
 var assembly = typeof(Program).Assembly;
-
 builder.Services.AddCarter(new DependencyContextAssemblyCatalog(assemblies: assembly));
-
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));
     config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
-
 builder.Services.AddValidatorsFromAssembly(assembly);
 
+
+//Data Services
 builder.Services.AddMarten(opt =>
 {
     opt.Connection(builder.Configuration.GetConnectionString("Database")!);
     opt.Schema.For<ShoppingCart>().Identity(sc => sc.Username);
 }).UseLightweightSessions();
-
-builder.Services.AddExceptionHandler<CustomExceptionHandler>();
-builder.Services.AddHealthChecks()
-    .AddRedis(builder.Configuration.GetConnectionString("Redis")!)
-    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
-
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
 builder.Services.AddStackExchangeRedisCache((opt) =>
 {
     opt.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
-builder.Services.AddScoped<IBasketRepository, BasketRepository>();
-builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
+//Cross-Cutting Services
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+builder.Services.AddHealthChecks()
+    .AddRedis(builder.Configuration.GetConnectionString("Redis")!)
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
 
