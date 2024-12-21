@@ -1,36 +1,33 @@
 ﻿namespace Domain.ValueObjects;
-
 public record Address
 {
-    //(string Country, string City, string Street, string Address1, string Address2, string ZipCode);
-
-    public string Country { get; private set; } = default!;
-
-    public string City { get; private set; } = default!;
-
-    public string Region { get; private set; } = default!;
-
-    public string PostalCode { get; private set; } = default!;
-
-    public string Street { get; private set; } = default!;
-
-    public string ZipCode { get; private set; } = default!;
-
-
-    private Address(string country, string city, string region, string postalCode, string street, string zipCode)
+    public string FirstName { get; } = default!;
+    public string LastName { get; } = default!;
+    public string? EmailAddress { get; } = default!;
+    public string AddressLine { get; } = default!;
+    public string Country { get; } = default!;
+    public string State { get; } = default!;
+    public string ZipCode { get; } = default!;
+    protected Address()
     {
+    }
+
+    private Address(string firstName, string lastName, string emailAddress, string addressLine, string country, string state, string zipCode)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        EmailAddress = emailAddress;
+        AddressLine = addressLine;
         Country = country;
-        City = city;
-        Region = region;
-        PostalCode = postalCode;
-        Street = street;
+        State = state;
         ZipCode = zipCode;
     }
 
-    public static Address Of(string country, string city, string region, string postalCode, string street, string zipCode)
+    public static Address Of(string firstName, string lastName, string emailAddress, string addressLine, string country, string state, string zipCode)
     {
-        // TODO: add required validations!
+        ArgumentException.ThrowIfNullOrWhiteSpace(emailAddress);
+        ArgumentException.ThrowIfNullOrWhiteSpace(addressLine);
 
-        return new Address(country, city, region, postalCode, street, zipCode);
+        return new Address(firstName, lastName, emailAddress, addressLine, country, state, zipCode);
     }
 }

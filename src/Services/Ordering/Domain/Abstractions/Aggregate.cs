@@ -1,20 +1,17 @@
-﻿using System.Collections.ObjectModel;
-
-namespace Domain.Abstractions;
+﻿namespace Domain.Abstractions;
 public abstract class Aggregate<Tid> : Entity<Tid>, IAggregate<Tid>
 {
     private readonly IList<IDomainEvent> _domainEvents = [];
-
-    public ReadOnlyCollection<IDomainEvent> DomainEvents  => _domainEvents.AsReadOnly();
+    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     protected void AddDomainEvent(IDomainEvent domainEvent)
     {
         _domainEvents.Add(domainEvent);
     }
 
-    public IEnumerable<IDomainEvent> ClearDomainEvents()
+    public IDomainEvent[] ClearDomainEvents()
     {
-        var domainEvents = _domainEvents.AsReadOnly();
+        var domainEvents = _domainEvents.ToArray();
 
         _domainEvents.Clear();
 

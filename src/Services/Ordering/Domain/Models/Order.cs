@@ -16,13 +16,13 @@ public class Order : Aggregate<OrderId>
         private set { }
     }
 
-    public static Order Create(OrderName orderName, CustomerId customerId, Address billingAddress, Address shippingAddress, Payment payment)
+    public static Order Create(OrderId id, OrderName orderName, CustomerId customerId, Address billingAddress, Address shippingAddress, Payment payment)
     {
         var order = new Order
         {
-            Id = OrderId.Of(Guid.NewGuid()),
-            OrderName = orderName,
+            Id = id,
             CustomerId = customerId,
+            OrderName = orderName,
             BillingAddress = billingAddress,
             ShippingAddress = shippingAddress,
             Payment = payment,
@@ -34,12 +34,11 @@ public class Order : Aggregate<OrderId>
         return order;
     }
 
-    public void Update(OrderName orderName, CustomerId customerId, Address billingAddress, Address shippingAddress, Payment payment, OrderStatus status)
+    public void Update(OrderName orderName, Address billingAddress, Address shippingAddress, Payment payment, OrderStatus status)
     {
         OrderName = orderName;
-        CustomerId = customerId;
-        BillingAddress = billingAddress;
         ShippingAddress = shippingAddress;
+        BillingAddress = billingAddress;
         Payment = payment;
         Status = status;
 

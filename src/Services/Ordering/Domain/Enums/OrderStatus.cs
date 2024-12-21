@@ -1,8 +1,8 @@
 ﻿namespace Domain.Enums;
 public enum OrderStatus
 {
-    Draft,
-    Pending,
-    Completed,
-    Cancelled
+    Draft = 1,
+    Pending = 2,
+    Completed = 3,
+    Cancelled = 4
 }
