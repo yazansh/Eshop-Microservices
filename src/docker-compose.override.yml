@@ -23,6 +23,14 @@ services:
     volumes:
       - postgres_basket:/var/lib/postgresql/data/ 
 
+  orderdb:
+    container_name: orderdb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=password123Orders
+    ports:
+      - 1433:1433
+
   distributedcache:
     container_name: distributedcache
     ports: 
