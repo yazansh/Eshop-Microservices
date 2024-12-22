@@ -1,6 +1,4 @@
-﻿using Ordering.Infrastructure.Data;
-
-namespace Ordering.Infrastructure.Extensions;
+﻿namespace Ordering.Infrastructure.Data.Extensions;
 public static class DatabaseExtentions
 {
     public static async Task SeedAsync(this ApplicationDbContext context)
