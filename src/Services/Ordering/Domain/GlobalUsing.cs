@@ -1,6 +1,6 @@
-﻿global using Domain.Abstractions;
-global using Domain.ValueObjects;
-global using Domain.Exceptions;
-global using Domain.Enums;
-global using Domain.Events;
-global using Domain.Models;
+﻿global using Ordering.Domain.Abstractions;
+global using Ordering.Domain.ValueObjects;
+global using Ordering.Domain.Exceptions;
+global using Ordering.Domain.Enums;
+global using Ordering.Domain.Events;
+global using Ordering.Domain.Models;

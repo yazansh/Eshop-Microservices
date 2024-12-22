@@ -1,4 +1,7 @@
-﻿namespace Domain.Models;
+﻿using Ordering.Domain.Abstractions;
+using Ordering.Domain.ValueObjects;
+
+namespace Ordering.Domain.Models;
 public class OrderItem : Entity<OrderItemId>
 {
     public OrderId OrderId { get; private set; } = default!;

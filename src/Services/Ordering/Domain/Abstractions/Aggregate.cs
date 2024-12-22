@@ -1,4 +1,4 @@
-﻿namespace Domain.Abstractions;
+﻿namespace Ordering.Domain.Abstractions;
 public abstract class Aggregate<Tid> : Entity<Tid>, IAggregate<Tid>
 {
     private readonly IList<IDomainEvent> _domainEvents = [];
