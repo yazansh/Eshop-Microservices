@@ -1,8 +1,7 @@
-﻿using Ordering.Domain.Models;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Ordering.Infrastructure.Data;
-public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
+public class ApplicationDbContext(DbContextOptions options) : DbContext(options), IApplicationDbContext
 {
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
