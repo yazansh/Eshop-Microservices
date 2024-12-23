@@ -7,14 +7,19 @@ public class DispatchDomainEventsInterceptor(IMediator mediator) : SaveChangesIn
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
+        // I think it is more logical to dispatch and publish events after the save!
+        var saveResult = base.SavingChanges(eventData, result);
         DispatchDomanEventsAsync(eventData.Context).GetAwaiter().GetResult();
-        return base.SavingChanges(eventData, result);
+
+        return saveResult;
     }
 
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
+        var saveResult = await base.SavingChangesAsync(eventData, result, cancellationToken);
         await DispatchDomanEventsAsync(eventData.Context);
-        return await base.SavingChangesAsync(eventData, result, cancellationToken);
+
+        return saveResult;
     }
 
     private async Task DispatchDomanEventsAsync(DbContext? context)
