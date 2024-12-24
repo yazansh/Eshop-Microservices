@@ -2,4 +2,4 @@
 public record GetOrdersByCustomerQuery(Guid CustomerId) 
     : IQuery<GetOrdersByCustomerQueryResult>;
 
-public record GetOrdersByCustomerQueryResult(IEnumerable<OrderDto> OrdersDto);
+public record GetOrdersByCustomerQueryResult(IEnumerable<OrderDto> Result);

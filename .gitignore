@@ -398,3 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 /src/Services/Discount/Discount.Grpc/DiscountDb.sql-shm
 /src/Services/Discount/Discount.Grpc/DiscountDb.sql-wal
+/src/Services/Discount/Discount.Grpc/DiscountDb.sql

@@ -13,7 +13,7 @@ public class CreateOrderHandler
         return new CreateOrderCommandResult(order.Id.Value);
     }
 
-    private Order ProjectOrderDtoToDomainOrder(OrderDto orderDto)
+    private static Order ProjectOrderDtoToDomainOrder(OrderDto orderDto)
     {
         var order = Order.Create(
             OrderId.Of(Guid.NewGuid()),

@@ -12,13 +12,13 @@ public class GetOrdersQueryHandler
             .AsNoTracking()
             .Include(o => o.OrderItems)
             .OrderBy(o => o.OrderName.Value)
-            .Skip(pageIndex * pageIndex)
-            .Take(pageIndex)
+            .Skip(pageIndex * pageSize)
+            .Take(pageSize)
             .ToListAsync(cancellationToken);
 
         var count = await dbContext.Orders.LongCountAsync(cancellationToken);
 
         return new GetOrdersQueryResult(
-            new PaginatedResult<OrderDto>(orders.ToOrderDtoList(), pageIndex, pageIndex, count));
+            new PaginatedResult<OrderDto>(orders.ToOrderDtoList(), pageIndex, pageSize, count));
     }
 }
