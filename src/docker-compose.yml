@@ -11,6 +11,9 @@ services:
   distributedcache:
     image: redis
 
+  messagebroker:
+    image: rabbitmq
+
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
     build:

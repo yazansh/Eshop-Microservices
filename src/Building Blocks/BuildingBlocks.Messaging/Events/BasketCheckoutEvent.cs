@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 namespace BuildingBlocks.Messaging.Events;
-public class BasketCheckoutEvent : IIntegrationEvent
+public record BasketCheckoutEvent : IntegrationEvent
 {
     public required string OrderName { get; set; }
     public required Guid CustomerId { get; set; }

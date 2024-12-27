@@ -1,7 +1,7 @@
 ﻿namespace BuildingBlocks.Messaging.Events;
-public interface IIntegrationEvent
+public record IntegrationEvent
 {
-    Guid EventId => Guid.NewGuid();
-    DateTime OccurredOn => DateTime.UtcNow;
-    string EventType => GetType().AssemblyQualifiedName;
+    public Guid EventId => Guid.NewGuid();
+    public DateTime OccurredOn => DateTime.UtcNow;
+    public string EventType => GetType().AssemblyQualifiedName;
 }
