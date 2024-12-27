@@ -6,7 +6,7 @@ public class ShoppingCart
 
     public List<ShoppingCartItem> Items { get; set; } = [];
 
-    public double TotalPrice => Items.Sum(i => i.Price * i.Quantity);
+    public decimal TotalPrice => Items.Sum(i => i.Price * i.Quantity);
 
     [SetsRequiredMembers]
     public ShoppingCart(string userName)
