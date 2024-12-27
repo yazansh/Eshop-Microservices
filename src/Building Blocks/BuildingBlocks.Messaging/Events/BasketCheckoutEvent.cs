@@ -15,9 +15,8 @@ public class BasketCheckoutEvent : IIntegrationEvent
 }
 
 [method: SetsRequiredMembers]
-public record BasketCheckoutEventOrderItem(Guid OrderId, Guid ProductId, decimal Price, int Quantity)
+public record BasketCheckoutEventOrderItem(Guid ProductId, decimal Price, int Quantity)
 {
-    public required Guid OrderId { get; set; } = OrderId;
     public required Guid ProductId { get; set; } = ProductId;
     public required decimal Price { get; set; } = Price;
     public required int Quantity { get; set; } = Quantity;
@@ -25,6 +24,11 @@ public record BasketCheckoutEventOrderItem(Guid OrderId, Guid ProductId, decimal
 
 public record BasketCheckoutEventPayment
 {
+    public BasketCheckoutEventPayment()
+    {
+        
+    }
+
     [SetsRequiredMembers]
     public BasketCheckoutEventPayment(string cardName, string cardNumber, string expiration, string cVV, int paymentMethod)
     {

@@ -3,7 +3,8 @@
 public record OrderItemDto : BasketCheckoutEventOrderItem
 {
     [SetsRequiredMembers]
-    public OrderItemDto(Guid OrderId, Guid ProductId, decimal Price, int Quantity) : base(OrderId, ProductId, Price, Quantity)
+    public OrderItemDto(Guid ProductId, decimal Price, int Quantity) : base(//OrderId,
+                                                            ProductId, Price, Quantity)
     {
     }
 }

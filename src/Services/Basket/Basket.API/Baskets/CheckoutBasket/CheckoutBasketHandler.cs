@@ -1,4 +1,4 @@
-namespace Basket.API.Baskets.CheckoutBasket;
+﻿namespace Basket.API.Baskets.CheckoutBasket;
 public record CheckoutBasketCommand(BasketCheckoutDto BasketCheckoutDto)
     : ICommand<CheckoutBasketCommandResult>;
 public record CheckoutBasketCommandResult(bool IsSuccess);
@@ -56,7 +56,7 @@ public class CheckoutBasketCommandHandler
             ShippingAddress = shippingAddressDto,
             Payment = paymentDto,
             OrderItems = basket.OrderItems
-            .Select(i => new OrderItemDto(Guid.NewGuid(), i.ProductId, i.Price, i.Quantity)).ToList()
+            .Select(i => new OrderItemDto(i.ProductId, i.Price, i.Quantity)).ToList()
         };
     }
 }
