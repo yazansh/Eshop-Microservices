@@ -1,12 +1,16 @@
 ﻿namespace Ordering.Application.Orders.EventHandlers.Domain;
 public class OrderCreatedEventHandler 
-    (ILogger<OrderCreatedEventHandler> logger)
+    (ILogger<OrderCreatedEventHandler> logger, IFeatureManager featureManager, IPublishEndpoint publishEndpoint)
     : INotificationHandler<OrderCreatedEvent>
 {
-    public Task Handle(OrderCreatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(OrderCreatedEvent domainEvent, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Order Created Event Handler : {@Notification}", notification);
+        logger.LogInformation("Domain Event handled: {@DomainEvent}", domainEvent.GetType().Name);
 
-        return Task.CompletedTask;
+        if (await featureManager.IsEnabledAsync("OrderFullfilment"))
+        {
+            var orderCreatedIntegrationEvent = domainEvent.Order.ToOrderDto();
+            await publishEndpoint.Publish(orderCreatedIntegrationEvent, cancellationToken);
+        }
     }
 }
